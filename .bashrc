@@ -103,6 +103,7 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # function and alias for some programs
+alias ps2pdf='ps2pdf -dNOSAFER'
 alias mintty='mintty -i /Cygwin-Terminal.ico -'
 
 if [ "$HOSTNAME" = "Think-PC" ]; then
