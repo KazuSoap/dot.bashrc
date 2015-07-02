@@ -23,12 +23,12 @@ export HISTSIZE="4096"
 if [ "$EMACS" = "" ]; then
 	#PATH=`cygpath -u "D:\Program Files\emacs\bin"`:$PATH #先頭に追加
 	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"` #末尾に追加
+	PATH="$PATH":`cygpath -u "D:\Program Files\Path_File"`
+	PATH="$PATH":`cygpath -u "D:\Program Files (x86)\Path_File(x86)"`
 
 	if [ "$HOSTNAME" = "Think-PC" ]; then
 		PATH="$PATH":`cygpath -u "D:\Program Files (x86)\teraterm"`
 		PATH="$PATH":`cygpath -u "D:\GHS\ARM.V2013.5.4\multi_614"`
-		PATH="$PATH":`cygpath -u "D:\Program Files\Path_File"`
-		PATH="$PATH":`cygpath -u "D:\Program Files (x86)\Path_File(x86)"`
 	fi
 fi
 
@@ -104,7 +104,12 @@ alias l='ls -CF'
 
 # function and alias for some programs
 alias ps2pdf='ps2pdf -dNOSAFER'
-alias mintty='mintty -i /Cygwin-Terminal.ico -'
+
+if [ "$OSTYPE" = "cygwin" ]; then
+	alias mintty='mintty -i /Cygwin-Terminal.ico -'
+else [ "$OSTYPE" = "msys" ]
+	alias mintty='mintty -i /msys2.ico -'
+fi
 
 if [ "$HOSTNAME" = "Think-PC" ]; then
 	alias tterm='ttermpro'
