@@ -118,8 +118,7 @@ fi
 # -------------------------------------------------------------
 # create emacs env file
 # -------------------------------------------------------------
-# if [ "$EMACS" = "" -a "$OSTYPE" = "cygwin" ]; then
-if [ "$EMACS" = "" ]; then
+if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 	for i in "PATH" "HOMEPATH" "SHELL"; do
 		echo "(setenv \"$i\" \"`cygpath -amp "${!i}"`\")"
 	done > ~/.emacs.d/site-lisp/shell_env.el
@@ -127,6 +126,7 @@ if [ "$EMACS" = "" ]; then
 	for i in "PKG_CONFIG_PATH"; do
 		echo "(setenv \"$i\" \"${!i}\")"
 	done >> ~/.emacs.d/site-lisp/shell_env.el
-	emacs -batch -f batch-byte-compile `cygpath -w "~/.emacs.d/site-lisp/shell_env.el"` >/dev/null 2>&1
+	emacs -batch -f batch-byte-compile `cygpath -w "~/.emacs.d/site-lisp/shell_env.el"`\
+	> /dev/null 2>&1
 fi
 # -------------------------------------------------------------
