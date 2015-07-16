@@ -23,12 +23,12 @@ export HISTSIZE="4096"
 if [ "$EMACS" = "" ]; then
 	#PATH=`cygpath -u "D:\Program Files\emacs\bin"`:$PATH #先頭に追加
 	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"` #末尾に追加
-	PATH="$PATH":`cygpath -u "D:\Program Files\Path_File"`
-	PATH="$PATH":`cygpath -u "D:\Program Files (x86)\Path_File(x86)"`
+	PATH=$PATH:`cygpath -u "D:\Program Files\Path_File"`
+	PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Path_File(x86)"`
 
 	if [ "$HOSTNAME" = "Think-PC" ]; then
-		PATH="$PATH":`cygpath -u "D:\Program Files (x86)\teraterm"`
-		PATH="$PATH":`cygpath -u "D:\GHS\ARM.V2013.5.4\multi_614"`
+		PATH=$PATH:`cygpath -u "D:\Program Files (x86)\teraterm"`
+		PATH=$PATH:`cygpath -u "D:\GHS\ARM.V2013.5.4\multi_614"`
 	fi
 fi
 
@@ -106,9 +106,9 @@ alias l='ls -CF'
 alias ps2pdf='ps2pdf -dNOSAFER'
 
 if [ "$OSTYPE" = "cygwin" ]; then
-	alias mintty='mintty -i /Cygwin-Terminal.ico -'
+	alias mintty='mintty -i /Cygwin-Terminal.ico'
 else [ "$OSTYPE" = "msys" ]
-	alias mintty='mintty -i /msys2.ico -'
+	 alias mintty='mintty -i /msys2.ico'
 fi
 
 if [ "$HOSTNAME" = "Think-PC" ]; then
@@ -118,7 +118,7 @@ fi
 # -------------------------------------------------------------
 # create emacs env file
 # -------------------------------------------------------------
-if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
+if [ -d ~/.emacs.d/site-lisp/ -a "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 	for i in "PATH" "HOMEPATH" "SHELL"; do
 		echo "(setenv \"$i\" \"`cygpath -amp "${!i}"`\")"
 	done > ~/.emacs.d/site-lisp/shell_env.el
@@ -127,6 +127,6 @@ if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 		echo "(setenv \"$i\" \"${!i}\")"
 	done >> ~/.emacs.d/site-lisp/shell_env.el
 	emacs -batch -f batch-byte-compile `cygpath -w "~/.emacs.d/site-lisp/shell_env.el"`\
-	> /dev/null 2>&1
+		  > /dev/null 2>&1
 fi
 # -------------------------------------------------------------
