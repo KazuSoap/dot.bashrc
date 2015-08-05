@@ -1,11 +1,9 @@
 # -------------------------------------------------------------
 # environment
 # -------------------------------------------------------------
-#CYGWIN | MSYS
+# MSYS
 # winsymlinks : win形式でシンボリックリンク
-if [ "$OSTYPE" = "cygwin" ]; then
-	export CYGWIN="winsymlinks"
-else [ "$OSTYPE" = "msys" ]
+if [ "$OSTYPE" = "msys" ]; then
 	export MSYS="winsymlinks"
 fi
 
@@ -20,7 +18,7 @@ export HISTFILESIZE="4096"
 export HISTSIZE="4096"
 
 # PATH
-if [ "$EMACS" = "" ]; then
+if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 	#PATH=`cygpath -u "D:\Program Files\emacs\bin"`:$PATH #先頭に追加
 	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"` #末尾に追加
 	PATH=$PATH:`cygpath -u "D:\Program Files\Path_File"`
@@ -55,12 +53,12 @@ function custom_prompt_command {
     typeset _Retv=$?
     typeset _PromptColor=""
     if [[ ${_Retv} -eq 0 ]] ; then
-    _PromptColor="\[\033[0;37m\]"
+    _PromptColor="\e[0;37m"
     else
-    _PromptColor="\[\033[1;33m\]"
+    _PromptColor="\e[1;33m"
     fi
-  export PS1="\[${_PromptColor}\]
-[ Host: \H | Time: $(/bin/date '+%Y-%m-%d %H:%M:%S') | User: \u | Retv: \$? ]
+	export PS1="\[${_PromptColor}\]
+[ Host: \H | Time: $(/bin/date '+%Y/%m/%d %H:%M:%S') | User: \u | Retv: \$? ]
 [ Path: \w ]
 # \[\e[0m\]"
 }
@@ -105,9 +103,7 @@ alias l='ls -CF'
 # function and alias for some programs
 alias ps2pdf='ps2pdf -dNOSAFER'
 
-if [ "$OSTYPE" = "cygwin" ]; then
-	alias mintty='mintty -i /Cygwin-Terminal.ico'
-else [ "$OSTYPE" = "msys" ]
+if [ "$OSTYPE" = "msys" ]; then
 	 alias mintty='mintty -i /msys2.ico'
 fi
 
