@@ -20,6 +20,7 @@ export HISTSIZE="4096"
 # PATH
 if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 	#PATH=`cygpath -u "D:\Program Files\emacs\bin"`:$PATH #先頭に追加
+	PATH=$PATH:/mingw64/local/opencv2.4.11/bin #末尾に追加
 	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"` #末尾に追加
 	PATH=$PATH:`cygpath -u "D:\Program Files\Path_File"`
 	PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Path_File(x86)"`
