@@ -21,7 +21,6 @@ export HISTSIZE="4096"
 if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 	if [ "$MSYSTEM" = "MINGW64" ]; then
 		PATH=$PATH:/mingw64/local/mingw-utils-0.4/bin # 末尾に追加
-		PATH=$PATH:/mingw64/local/opencv2.4.11/bin
 	fi
 
 	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"`
