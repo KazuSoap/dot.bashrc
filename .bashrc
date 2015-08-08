@@ -19,9 +19,12 @@ export HISTSIZE="4096"
 
 # PATH
 if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
-	#PATH=`cygpath -u "D:\Program Files\emacs\bin"`:$PATH #先頭に追加
-	PATH=$PATH:/mingw64/local/opencv2.4.11/bin #末尾に追加
-	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"` #末尾に追加
+	if [ "$MSYSTEM" = "MINGW64" ]; then
+		PATH=$PATH:/mingw64/local/mingw-utils-0.4/bin # 末尾に追加
+		PATH=$PATH:/mingw64/local/opencv2.4.11/bin
+	fi
+
+	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"`
 	PATH=$PATH:`cygpath -u "D:\Program Files\Path_File"`
 	PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Path_File(x86)"`
 
@@ -115,7 +118,7 @@ fi
 # -------------------------------------------------------------
 # create emacs env file
 # -------------------------------------------------------------
-if [ -d ~/.emacs.d/site-lisp/ -a "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
+if [ -d ~/.emacs.d/site-lisp/ -a "$EMACS" = "" -a "$MSYSTEM" = "MINGW64" ]; then
 	for i in "PATH" "HOMEPATH" "SHELL"; do
 		echo "(setenv \"$i\" \"`cygpath -amp "${!i}"`\")"
 	done > ~/.emacs.d/site-lisp/built-in/shell_env.el
