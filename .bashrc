@@ -104,7 +104,11 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # function and alias for some programs
-alias ps2pdf='ps2pdf -dNOSAFER'
+if type gs > /dev/null 2>&1; then
+	export GS_LIB=/mingw64/share/ghostscript/9.15/lib;
+	#alias ps2pdf='ps2pdf -dNOKANJI -dNOSAFER'
+	#alias ps2pdf='ps2pdf -dNOKANJI'
+fi
 
 if [ "$OSTYPE" = "msys" ]; then
 	 alias mintty='mintty -i /msys2.ico'
