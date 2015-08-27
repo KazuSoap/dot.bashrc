@@ -107,7 +107,6 @@ alias l='ls -CF'
 if type gs > /dev/null 2>&1; then
 	export GS_LIB=/mingw64/share/ghostscript/9.15/lib;
 	#alias ps2pdf='ps2pdf -dNOKANJI -dNOSAFER'
-	#alias ps2pdf='ps2pdf -dNOKANJI'
 fi
 
 if [ "$OSTYPE" = "msys" ]; then
