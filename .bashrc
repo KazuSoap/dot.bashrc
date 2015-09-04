@@ -104,32 +104,15 @@ alias la='ls -A'
 alias l='ls -CF'
 
 # function and alias for some programs
-if type gs > /dev/null 2>&1; then
-	export GS_LIB=/mingw64/share/ghostscript/9.15/lib;
-	#alias ps2pdf='ps2pdf -dNOKANJI -dNOSAFER'
-fi
-
 if [ "$OSTYPE" = "msys" ]; then
 	 alias mintty='mintty -i /msys2.ico'
+
+	 if type gs > /dev/null 2>&1; then
+		export GS_LIB=/mingw64/share/ghostscript/9.15/lib;
+		#alias ps2pdf='ps2pdf -dNOKANJI -dNOSAFER'
+	fi
 fi
 
 if [ "$HOSTNAME" = "Think-PC" ]; then
 	alias tterm='ttermpro'
 fi
-
-# -------------------------------------------------------------
-# create emacs env file
-# -------------------------------------------------------------
-if [ -d ~/.emacs.d/site-lisp/ -a "$EMACS" = "" -a "$MSYSTEM" = "MINGW64" ]; then
-	for i in "PATH" "HOMEPATH" "SHELL"; do
-		echo "(setenv \"$i\" \"`cygpath -amp "${!i}"`\")"
-	done > ~/.emacs.d/site-lisp/built-in/shell_env.el
-
-	for i in "PKG_CONFIG_PATH"; do
-		echo "(setenv \"$i\" \"${!i}\")"
-	done >> ~/.emacs.d/site-lisp/built-in/shell_env.el
-	emacs -batch -f batch-byte-compile\
-		  `cygpath -w "~/.emacs.d/site-lisp/built-in/shell_env.el"`\
-		  > /dev/null 2>&1
-fi
-# -------------------------------------------------------------
