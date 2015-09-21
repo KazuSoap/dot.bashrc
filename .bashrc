@@ -1,23 +1,41 @@
-# -------------------------------------------------------------
-# environment
-# -------------------------------------------------------------
-# MSYS
-# winsymlinks : win形式でシンボリックリンク
+# ~/.bashrc: executed by bash(1) for non-login shells.
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
 if [ "$OSTYPE" = "msys" ]; then
-	export MSYS="winsymlinks"
+	# winsymlinks : win形式でシンボリックリンク
+	MSYS="winsymlinks"
 fi
 
-#LC_ALL
-#export LC_ALL=en_US.UTF-8
-export LANG='ja_JP.UTF-8'
-export LC_ALL="${LANG}"
+LANG='ja_JP.UTF-8'
+LC_ALL="${LANG}"
 
 # history
-export HISTCONTROL="ignoreboth"
-export HISTFILESIZE="4096"
-export HISTSIZE="4096"
+# don't put duplicate lines or lines starting with space in the history.
+# See bash(1) for more options
+HISTCONTROL=ignoreboth
 
-# PATH
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE="4096"
+HISTFILESIZE="4096"
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
 if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 	if [ "$MSYSTEM" = "MINGW64" ]; then
 		PATH=$PATH:/mingw64/local/mingw-utils-0.4/bin # 末尾に追加
@@ -33,77 +51,84 @@ if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 	fi
 fi
 
-# -------------------------------------------------------------
-# shell option
-# -------------------------------------------------------------
-# interaction mode
-if [[ "${PS1}" ]] ; then
-    shopt -s cmdhist
-    shopt -s histappend
-    shopt -s checkwinsize
-    shopt -s no_empty_cmd_completion
-    shopt -u histappend
-    shopt -q -s cdspell
-    shopt -q -s checkwinsize
-    shopt -s cmdhist
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# If set, the pattern "**" used in a pathname expansion context will
+# match all files and zero or more directories and subdirectories.
+#shopt -s globstar
+
+if [ "$OSTYPE" = "linux-gnu" ]; then
+	# make less more friendly for non-text input files, see lesspipe(1)
+	[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
-# -------------------------------------------------------------
-# terminal
-# -------------------------------------------------------------
-# prompt
-function custom_prompt_command {
-    typeset _Retv=$?
-    typeset _PromptColor=""
-    if [[ ${_Retv} -eq 0 ]] ; then
-    _PromptColor="\e[0;37m"
-    else
-    _PromptColor="\e[1;33m"
-    fi
-	export PS1="\[${_PromptColor}\]
-[ Host: \H | Time: $(/bin/date '+%Y/%m/%d %H:%M:%S') | User: \u | Retv: \$? ]
-[ Path: \w ]
-# \[\e[0m\]"
-}
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
 
-PROMPT_COMMAND="custom_prompt_command"
+if [ "$EMACS" ];then
+	TERM=xterm-256color
+fi
 
-case ${TERM} in
-    "xterm" | "xterm-256color")
-        stty -ixon -ixoff
-        eval $(dircolors ~/.dir_colors)
-        alias ls='ls --classify --color=auto --show-control-char'
-        ;;
-    "emacs")
-        export LS_COLORS='no=00:fi=00:di=35:ln=36:ex=32'
-        export TERM_LENGTH='90'
-        alias ls='ls --classify --color --show-control-char -C'
-        ;;
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
 esac
 
-# -------------------------------------------------------------
-# complete
-# -------------------------------------------------------------
-complete -d cd
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+force_color_prompt=yes
 
-# -------------------------------------------------------------
-# alias
-# -------------------------------------------------------------
-# for interactive operation
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
+if [ -n "$force_color_prompt" ]; then
+	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
 
-# alias for misc
-alias grep='grep --color'
+if [ "$color_prompt" = yes ]; then
+	function custom_prompt_command {
+		if [ $? != 0 ] ; then
+			PromptColor="\e[1;33m"
+		else
+			PromptColor=""
+		fi
+		PS1="\[$PromptColor\]\n[ ${debian_chroot:+($debian_chroot)}\u@\H | $(/bin/date '+%Y-%m-%d %H:%M:%S') | Retv: \$? ]\n[ Path: \w ]\n\[\e[0m\]\$ "
+	}
 
-# alias for some shortcuts for different directory listings
-alias ls='ls -hF --color=always --show-control-chars'
-alias ll='ls -l'
+	PROMPT_COMMAND="custom_prompt_command"
+else
+	PROMPT_COMMAND=""
+	PS1="\n[ ${debian_chroot:+($debian_chroot)}\u@\H | $(/bin/date '+%Y-%m-%d %H:%M:%S') | Retv: \$? ]\n[ Path: \w ]\n\$ "
+fi
+
+unset color_prompt force_color_prompt
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dir_colors && eval "$(dircolors -b ~/.dir_colors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
-# function and alias for some programs
 if [ "$OSTYPE" = "msys" ]; then
 	 alias mintty='mintty -i /msys2.ico'
 
@@ -115,4 +140,28 @@ fi
 
 if [ "$HOSTNAME" = "Think-PC" ]; then
 	alias tterm='ttermpro'
+fi
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
 fi
