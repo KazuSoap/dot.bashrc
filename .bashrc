@@ -39,6 +39,8 @@ fi
 if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
 	if [ "$MSYSTEM" = "MINGW64" ]; then
 		PATH=$PATH:/mingw64/local/mingw-utils-0.4/bin # 末尾に追加
+    elif [ "$MSYSTEM" = "MINGW32" ]; then
+        PATH=$PATH:/mingw32/local/mingw-utils-0.4/bin # 末尾に追加
 	fi
 
 	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"`
