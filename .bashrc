@@ -5,13 +5,8 @@
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
-      *) return;;
+    *) return;;
 esac
-
-if [ "$OSTYPE" = "msys" ]; then
-	# winsymlinks : win形式でシンボリックリンク
-	MSYS="winsymlinks"
-fi
 
 LANG='ja_JP.UTF-8'
 LC_ALL="${LANG}"
@@ -36,23 +31,6 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
-	if [ "$MSYSTEM" = "MINGW64" ]; then
-		PATH=$PATH:/mingw64/local/mingw-utils-0.4/bin # 末尾に追加
-    elif [ "$MSYSTEM" = "MINGW32" ]; then
-        PATH=$PATH:/mingw32/local/mingw-utils-0.4/bin # 末尾に追加
-	fi
-
-	PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"`
-	PATH=$PATH:`cygpath -u "D:\Program Files\Path_File"`
-	PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Path_File(x86)"`
-
-	if [ "$HOSTNAME" = "Think-PC" ]; then
-		PATH=$PATH:`cygpath -u "D:\Program Files (x86)\teraterm"`
-		PATH=$PATH:`cygpath -u "D:\GHS\ARM.V2013.5.4\multi_614"`
-	fi
-fi
-
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
@@ -62,8 +40,8 @@ shopt -s checkwinsize
 #shopt -s globstar
 
 if [ "$OSTYPE" = "linux-gnu" ]; then
-	# make less more friendly for non-text input files, see lesspipe(1)
-	[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+    # make less more friendly for non-text input files, see lesspipe(1)
+    [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
 # set variable identifying the chroot you work in (used in the prompt below)
@@ -72,7 +50,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 if [ "$EMACS" ];then
-	TERM=xterm-256color
+    TERM=xterm-256color
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
@@ -86,30 +64,30 @@ esac
 force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
-	if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
     else
-	color_prompt=
+        color_prompt=
     fi
 fi
 
 if [ "$color_prompt" = yes ]; then
-	function custom_prompt_command {
-		if [ $? != 0 ] ; then
-			PromptColor="\e[1;33m"
-		else
-			PromptColor=""
-		fi
-		PS1="\[$PromptColor\]\n[ ${debian_chroot:+($debian_chroot)}\u@\H | $(/bin/date '+%Y-%m-%d %H:%M:%S') | Retv: \$? ]\n[ Path: \w ]\n\[\e[0m\]\$ "
-	}
+    function custom_prompt_command {
+        if [ $? != 0 ] ; then
+            PromptColor="\e[1;33m"
+        else
+            PromptColor=""
+        fi
+        PS1="\[$PromptColor\]\n[ ${debian_chroot:+($debian_chroot)}\u@\H | $(/bin/date '+%Y-%m-%d %H:%M:%S') | Retv: \$? ]\n[ Path: \w ]\n\[\e[0m\]\$ "
+    }
 
-	PROMPT_COMMAND="custom_prompt_command"
+    PROMPT_COMMAND="custom_prompt_command"
 else
-	PROMPT_COMMAND=""
-	PS1="\n[ ${debian_chroot:+($debian_chroot)}\u@\H | $(/bin/date '+%Y-%m-%d %H:%M:%S') | Retv: \$? ]\n[ Path: \w ]\n\$ "
+    PROMPT_COMMAND=""
+    PS1="\n[ ${debian_chroot:+($debian_chroot)}\u@\H | $(/bin/date '+%Y-%m-%d %H:%M:%S') | Retv: \$? ]\n[ Path: \w ]\n\$ "
 fi
 
 unset color_prompt force_color_prompt
@@ -132,16 +110,11 @@ alias la='ls -A'
 alias l='ls -CF'
 
 if [ "$OSTYPE" = "msys" ]; then
-	 alias mintty='mintty -i /msys2.ico'
-
-	 if type gs > /dev/null 2>&1; then
-		export GS_LIB=/mingw64/share/ghostscript/9.15/lib;
-		#alias ps2pdf='ps2pdf -dNOKANJI -dNOSAFER'
-	fi
+    alias mintty='mintty -i /msys2.ico'
 fi
 
 if [ "$HOSTNAME" = "Think-PC" ]; then
-	alias tterm='ttermpro'
+    alias tterm='ttermpro'
 fi
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -161,9 +134,9 @@ fi
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+        . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
 fi
