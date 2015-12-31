@@ -8,9 +8,6 @@ case $- in
     *) return;;
 esac
 
-LANG='ja_JP.UTF-8'
-LC_ALL="${LANG}"
-
 # history
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options

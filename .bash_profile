@@ -43,6 +43,9 @@ fi
 #   INFOPATH="${HOME}/info:${INFOPATH}"
 # fi
 
+LANG='ja_JP.UTF-8'
+LC_ALL="${LANG}"
+
 if [ "$OSTYPE" = "msys" ]; then
     # winsymlinks : win形式でシンボリックリンク
     export MSYS="winsymlinks"
