@@ -59,12 +59,10 @@ if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
     fi
 
     export PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"`
-    export PATH=$PATH:`cygpath -u "D:\Program Files\Path_File"`
-    export PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Path_File(x86)"`
 
-    if [ "$HOSTNAME" = "Think-PC" ]; then
-        export PATH=$PATH:`cygpath -u "D:\Program Files (x86)\teraterm"`
-        export PATH=$PATH:`cygpath -u "D:\GHS\ARM.V2013.5.4\multi_614"`
+    if [ "$HOSTNAME" = "DESKTOP-Q58CI9L" ]; then
+        export PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Android\android-sdk\platform-tools"`
+        export PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Android\android-sdk\tools"`
     fi
 fi
 
