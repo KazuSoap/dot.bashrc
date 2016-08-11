@@ -58,7 +58,7 @@ if [ "$EMACS" = "" -a "$OSTYPE" = "msys" ]; then
         export PATH=$PATH:/mingw32/local/mingw-utils-0.4/bin # 末尾に追加
     fi
 
-    export PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"`
+    # export PATH=$PATH:`cygpath -u "D:\Program Files\emacs\bin"`
 
     if [ "$HOSTNAME" = "DESKTOP-Q58CI9L" ]; then
         export PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Android\android-sdk\platform-tools"`
