@@ -48,50 +48,16 @@ LC_ALL="${LANG}"
 
 if [ "$OSTYPE" = "msys" ]; then
     # winsymlinks : win形式でシンボリックリンク
-    export MSYS="winsymlinks"
+    # 管理者モード有効化で管理者権限なしでシンボリックリンク作成可能
+    export MSYS="winsymlinks:nativestrict"
 
     if type gs > /dev/null 2>&1; then
-        export GS_LIB=/mingw64/share/ghostscript/9.15/lib;
+        export GS_LIB=/mingw64/share/ghostscript/9.21/lib;
     fi
-fi
 
-if [ "$EMACS" = "" ]; then
-    if [ "$OSTYPE" = "linux-gnu" ]; then
-        # localhost:0 のスクリーン0を指定
-        export DISPLAY=:0.0
-
-        # ハードウェアアクセラレーションではなく必ず間接レンダリング
-        export LIBGL_ALWAYS_INDIRECT=1
-
-        # X のリソースを登録する
-        xrdb merge ~/.Xresources
-
-        # accessibility bus の warning 抑制
-        export NO_AT_BRIDGE=1
-
-        # 半角/全角キーのオートリピート無効
-        xset -r 49
-
-        # IME 設定 (fcitx)
-        #fcitx > /dev/null 2>&1 # fcitx 起動
-        fcitx-autostart > /dev/null 2>&1 # fcitx 起動
-        export GTK_IM_MODULE=fcitx
-        export QT_IM_MODULE=fcitx
-        export XMODIFIERS="@im=fcitx"
-        export XMODIFIER="@im=fcitx"
-        export DefaultIMModule=fcitx
-
-    elif [ "$OSTYPE" = "msys" ]; then
-        if [ "$MSYSTEM" = "MINGW64" ]; then
-            export PATH=$PATH:/mingw64/local/mingw-utils-0.4/bin # 末尾に追加
-        elif [ "$MSYSTEM" = "MINGW32" ]; then
-            export PATH=$PATH:/mingw32/local/mingw-utils-0.4/bin # 末尾に追加
-        fi
-
-        if [ "$HOSTNAME" = "DESKTOP-Q58CI9L" ]; then
-            export PATH=$PATH:`cygpath -u "D:\Program Files\Java\jdk1.8.0_74\bin"`
-            export PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Android\android-sdk\tools"`
-            export PATH=$PATH:`cygpath -u "D:\Program Files (x86)\Android\android-sdk\platform-tools"`
-        fi
+    if [ "$MSYSTEM" = "MINGW64" ]; then
+        export PATH=$PATH:/mingw64/local/mingw-utils-0.4/bin # 末尾に追加
+    elif [ "$MSYSTEM" = "MINGW32" ]; then
+        export PATH=$PATH:/mingw32/local/mingw-utils-0.4/bin # 末尾に追加
     fi
 fi
