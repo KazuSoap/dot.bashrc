@@ -29,9 +29,9 @@ if [ -f "${HOME}/.bashrc" ] ; then
 fi
 
 # Set PATH so it includes user's private bin if it exists
-# if [ -d "${HOME}/bin" ] ; then
-#   PATH="${HOME}/bin:${PATH}"
-# fi
+if [ -d "${HOME}/bin" ] ; then
+  PATH="${HOME}/bin:${PATH}"
+fi
 
 # Set MANPATH so it includes users' private man if it exists
 # if [ -d "${HOME}/man" ]; then
@@ -51,13 +51,12 @@ if [ "$OSTYPE" = "msys" ]; then
     # 管理者モード有効化で管理者権限なしでシンボリックリンク作成可能
     export MSYS="winsymlinks:nativestrict"
 
-    if type gs > /dev/null 2>&1; then
-        export GS_LIB=/mingw64/share/ghostscript/9.21/lib;
+    if [ "$MSYSTEM" = "MINGW64" ]; then
+        export PATH=/mingw64/local/bin:$PATH
     fi
 
-    if [ "$MSYSTEM" = "MINGW64" ]; then
-        export PATH=$PATH:/mingw64/local/mingw-utils-0.4/bin # 末尾に追加
-    elif [ "$MSYSTEM" = "MINGW32" ]; then
-        export PATH=$PATH:/mingw32/local/mingw-utils-0.4/bin # 末尾に追加
-    fi
+    export JAVA_HOME=/c/usr_bin/jdk
+    export NODE_HOME=/c/usr_bin/node
+    export PATH=$PATH:$JAVA_HOME/bin
+    export PATH=$PATH:$NODE_HOME:$HOME/node_modules/.bin
 fi

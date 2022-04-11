@@ -106,6 +106,8 @@ alias l='ls -CF'
 
 if [ "$OSTYPE" = "msys" ]; then
     alias mintty='mintty -i /msys2.ico'
+    alias java='java -Dfile.encoding=UTF-8'
+    alias javac='javac -encoding UTF-8'
 fi
 
 # Add an "alert" alias for long running commands.  Use like so:

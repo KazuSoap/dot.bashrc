@@ -1,0 +1,14 @@
+BoldAsFont=no
+Transparency=high
+CursorType=block
+Font=Ricty Diminished Discord
+Locale=ja_JP
+Charset=UTF-8
+Columns=100
+Rows=31
+FontSmoothing=full
+Term=xterm
+BellType=0
+FontWeight=700
+FontIsBold=yes
+FontHeight=11
