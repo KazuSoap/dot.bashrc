@@ -1,0 +1,13 @@
+#! /bin/sh
+
+WINAPPDIR=$(cygpath -au $LOCALAPPDATA)/Microsoft/WindowsApps
+DISTRIBUTION=Ubuntu-22.04
+
+# cd wsl's $HOME directory
+cd //wsl.localhost/$DISTRIBUTION/home/$USERNAME
+
+# Start Ubuntu 22.04
+"$(readlink -f $WINAPPDIR/ubuntu2204)" run sudo -E -u $USERNAME bash --login -i
+
+# Terminate Ubuntu 22.04
+"$(readlink -f $WINAPPDIR/wsl)" -t $DISTRIBUTION
