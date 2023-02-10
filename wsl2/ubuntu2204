@@ -1,13 +1,10 @@
 #! /bin/sh
 
-WINAPPDIR=$(cygpath -au $LOCALAPPDATA)/Microsoft/WindowsApps
 DISTRIBUTION=Ubuntu-22.04
 
-# cd wsl's $HOME directory
-cd //wsl.localhost/$DISTRIBUTION/home/$USERNAME
-
 # Start Ubuntu 22.04
-"$(readlink -f $WINAPPDIR/ubuntu2204)" run sudo -E -u $USERNAME bash --login -i
+# Stop MSYS2 from mangling path names given at the command line by setting MSYS2_ARG_CONV_EXCL="*"
+MSYS2_ARG_CONV_EXCL="*" wsl --cd ~ -d $DISTRIBUTION /usr/libexec/nslogin sudo -E -u $USERNAME bash -l
 
 # Terminate Ubuntu 22.04
-"$(readlink -f $WINAPPDIR/wsl)" -t $DISTRIBUTION
+wsl -t $DISTRIBUTION
